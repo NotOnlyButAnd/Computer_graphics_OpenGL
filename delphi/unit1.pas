@@ -13,7 +13,7 @@ type
     procedure FormPaint(Sender: TObject);
   private
     { Private declarations }
-    hrc: HGLRC;  { èìÿ: òèï }
+    hrc: HGLRC;  { имя: тип }
   public
     { Public declarations }
   end;
@@ -36,25 +36,25 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  SetDCPixelFormat(Canvas.Handle);  // çàäàåì ôîðìàò ïèêñåëÿ
-  hrc:=wglCreateContext(Canvas.Handle);  // ñîçäàåì êîíòåêñò âîñïðîèçâåäåíèÿ
+  SetDCPixelFormat(Canvas.Handle);  // задаем формат пикселя
+  hrc:=wglCreateContext(Canvas.Handle);  // создаем контекст воспроизведения
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-  wglDeleteContext(hrc);  // îñâîáîæäåíèå êîíòåêñòà âîñïðîèçâåäåíèÿ
+  wglDeleteContext(hrc);  // освобождение контекста воспроизведения
 end;
 
 procedure TForm1.FormPaint(Sender: TObject);
 begin
-  wglMakeCurrent(Canvas.Handle,hrc);  // óñòàíîâèòü êîíòåêñò
-  glViewPort(0,0,ClientWidth,ClientHeight); // îáëàñòü âûâîäà
-  glClearColor(0.5,0.5,0.5,0);  // öâåò ôîíà
-  glClear(GL_COLOR_BUFFER_BIT); // î÷èñòêà áóôåðà êàäðà
+  wglMakeCurrent(Canvas.Handle,hrc);  // установить контекст
+  glViewPort(0,0,ClientWidth,ClientHeight); // область вывода
+  glClearColor(0.5,0.5,0.5,0);  // цвет фона
+  glClear(GL_COLOR_BUFFER_BIT); // очистка буфера кадра
   glPointSize(10);
 
-  //////// ðèñóåì òî÷êè ///////
-  glBegin(GL_POINTS); // îòêðûâàåì êîìàíäíóþ ñêîáêó
+  //////// рисуем точки ///////
+  glBegin(GL_POINTS); // открываем командную скобку
 
     glColor3f(0,0,0);
     glVertex2f(-0.1,-0.1);
@@ -63,8 +63,8 @@ begin
     glVertex2f(0.1,-0.1);
     glVertex2f(0.1,0);
     glVertex2f(0,0.1);
-  glEnd;  // çàêðûâàåì êîìàíäíóþ ñêîáêó
-SwapBuffers(Canvas.Handle); // âûâîä ñîäåðæèìîãî áóôåðà íà ýêðàí
+  glEnd;  // закрываем командную скобку
+SwapBuffers(Canvas.Handle); // вывод содержимого буфера на экран
 end;
 
 
