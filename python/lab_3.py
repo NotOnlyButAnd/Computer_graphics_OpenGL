@@ -32,20 +32,28 @@ def drawPicture(window, choice = 0):
         glTranslatef(x, 0, 0)
         glTranslatef(0, y, 0)
     elif choice == 2:
+        glTranslatef(x, 0, 0)
+        glTranslatef(0, y, 0)
         glRotatef(15, 0, 0, 1)
     elif choice == 3:
+        glTranslatef(x, 0, 0)
+        glTranslatef(0, y, 0)
         glRotatef(-15, 0, 0, 1)
     # LAB 3
     glBegin(GL_QUADS)
-    glVertex2f(0.5, 0.5)
-    glVertex2f(0.5, -0.5)
-    glVertex2f(-0.5, -0.5)
-    glVertex2f(-0.5, 0.5)
+    glColor3f(1, 1, 1)
+    glVertex2f(0.2, 0.2)
+    glVertex2f(0.2, -0.2)
+    glVertex2f(-0.2, -0.2)
+    glVertex2f(-0.2, 0.2)
     print(f"Drawing... {x} - x, {y} - y")
-
     glEnd()
 
-    if choice == 1:
+    glColor3f(0.8, 0, 0)
+    glRectf(-0.05, 0.0, 0.05, 0.2)
+
+
+    if choice == 1 or choice == 2 or choice == 3:
         glTranslatef(-x, 0, 0)
         glTranslatef(0, -y, 0)
 
