@@ -16,10 +16,10 @@ type
     procedure FormResize(Sender: TObject);
   private
     { Private declarations }
-    hrc: HGLRC;  { èìÿ: òèï  - ññûëêà íà êîíòåêñò âîñïðîèçâåäåíèÿ}
+    hrc: HGLRC;  { имя: тип  - ссылка на контекст воспроизведения}
     DC: HDC;
-    x: Extended;   // äëÿ glTranslateF
-    y: Extended;   // äëÿ glTranslateF
+    x: Extended;   // для glTranslateF
+    y: Extended;   // для glTranslateF
 
   public
     { Public declarations }
@@ -31,7 +31,7 @@ var
   j:Integer;
   choice: Integer;
   obj: (TETRAHEDRON, ICOSAHEDRON, DODECAHEDRON, CUBE, SPHERE, CONE, TORUS, TEAPOT) = CUBE;
-  mode: (POINT, LINE, FILL) = FILL; // ðåæèì îòîáðàæåíèÿ îáúåêòîâ
+  mode: (POINT, LINE, FILL) = FILL; // режим отображения объектов
   x_1: Extended;
   z_1: Extended;
 implementation
@@ -52,30 +52,30 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-DC:=GetDC(Handle); // ïîëó÷àåì ïðÿìóþ ññûëêó íà êîíòåêñò óñòðîéñòâà
-SetDCPixelFormat(DC);  // çàäàåì ôîðìàò ïèêñåëÿ
-hrc:=wglCreateContext(DC);  // ñîçäàåì êîíòåêñò âîñïðîèçâåäåíèÿ
+DC:=GetDC(Handle); // получаем прямую ссылку на контекст устройства
+SetDCPixelFormat(DC);  // задаем формат пикселя
+hrc:=wglCreateContext(DC);  // создаем контекст воспроизведения
 wglMakeCurrent(DC, hrc);
 glClearColor(1,1,1,1);
 glEnable(GL_DEPTH_TEST);
-glEnable(GL_LIGHTING); // âêëþ÷àåì ñâåò
-glEnable(GL_LIGHT0);  // âêë èñòî÷íèê íîëü
+glEnable(GL_LIGHTING); // включаем свет
+glEnable(GL_LIGHT0);  // вкл источник ноль
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
 wglMakeCurrent(0, 0);
-wglDeleteContext(hrc);  // îñâîáîæäåíèå êîíòåêñòà âîñïðîèçâåäåíèÿ
+wglDeleteContext(hrc);  // освобождение контекста воспроизведения
 ReleaseDC(Handle, DC);
 DeleteDC(DC);
 end;
 
 procedure TForm1.FormPaint(Sender: TObject);
 begin
-glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT); // î÷èñòêà áóôåðà êàäðà
+glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT); // очистка буфера кадра
 //glClearColor(1,1,1,1);
 
-// ÐÈÑÎÂÀÍÈÅ
+// РИСОВАНИЕ
 glTranslatef(x, 0, 0);
 glTranslatef(0, y, 0);
 glColor3f(0,0,0);
@@ -125,7 +125,7 @@ begin
 end;
 
 
-// ñòîëåøíèöà
+// столешница
 x_1:= -1.2;
 z_1:= 1.2;
 While z_1 <> -1.4 do
@@ -147,7 +147,7 @@ glTranslatef(-x, 0, 0);
 glTranslatef(0, -y, 0);
 
 
-SwapBuffers(DC); // âûâîä ñîäåðæèìîãî áóôåðà íà ýêðàí
+SwapBuffers(DC); // вывод содержимого буфера на экран
 
 //glTranslatef(-x1, -y1, 0);
 end;
@@ -210,13 +210,13 @@ end;
 
 procedure TForm1.FormResize(Sender: TObject);
 begin
-glViewPort(0,0,ClientWidth,ClientHeight); // îáëàñòü âûâîäà
+glViewPort(0,0,ClientWidth,ClientHeight); // область вывода
 glMatrixMode(GL_PROJECTION);
-glLoadIdentity; // âñå ìàòðèöû â èñõîäíîå ñîñòîÿíèå
-glFrustum(-1, 1, -1, 1, 3, 10); // âèäîâûå ïàðàìåòðû - ïåðñïåêòèâíàÿ ïðîåêöèÿ
-glTranslatef(0.0, 0.0, -8.0); // íà÷àëüíûé ñäâèã ñèñòåìû êîîðäèíàò
-glRotatef(30,1,0,0);    // ÷òîáû óâèäåòü
-glRotatef(70,0,1,0);    // òðåõìåðíîñòü
+glLoadIdentity; // все матрицы в исходное состояние
+glFrustum(-1, 1, -1, 1, 3, 10); // видовые параметры - перспективная проекция
+glTranslatef(0.0, 0.0, -8.0); // начальный сдвиг системы координат
+glRotatef(30,1,0,0);    // чтобы увидеть
+glRotatef(70,0,1,0);    // трехмерность
 glMatrixMode(GL_MODELVIEW);
 end;
 
